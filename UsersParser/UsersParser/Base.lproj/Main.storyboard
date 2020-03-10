@@ -29,6 +29,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="qAu-5d-BEO">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <attributedString key="attributedTitle"/>
                         <connections>
@@ -36,6 +37,7 @@
                         </connections>
                     </refreshControl>
                     <connections>
+                        <outlet property="addUserButton" destination="7to-NX-nHQ" id="nR8-iJ-ZTG"/>
                         <segue destination="gTt-fy-UeA" kind="show" identifier="details" id="Pze-fO-5Tz"/>
                     </connections>
                 </tableViewController>
@@ -134,7 +136,7 @@
                                     <action selector="addUser:" destination="YGp-QM-fac" eventType="touchUpInside" id="mld-jV-Yl6"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="kjqnrfjknqnoifn qlwkfwsnfvlse,nv kwenfkwsnf kwals nlwkn lwknv" placeholder="About" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Vxv-U0-9Lz">
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" text="kjqnrfjknqnoifn qlwkfwsnfvlse,nv kwenfkwsnf kwals nlwkn lwknv" placeholder="About" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Vxv-U0-9Lz">
                                 <rect key="frame" x="20" y="641" width="374" height="167"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
@@ -280,6 +282,8 @@
                         <outlet property="aboutLable" destination="xJK-0B-pqD" id="MP7-S7-lYW"/>
                         <outlet property="addresLabel" destination="xKE-rH-nou" id="xXK-CR-oql"/>
                         <outlet property="ageLabel" destination="O9q-xu-s1i" id="BzP-3X-vkG"/>
+                        <outlet property="deleteUserButton" destination="DUb-YE-FGj" id="3HU-mZ-OxP"/>
+                        <outlet property="editUserButton" destination="J8l-sk-Gyp" id="NCm-pN-gec"/>
                         <outlet property="emailLabel" destination="RiN-6c-c6n" id="Twb-Yr-M6z"/>
                         <outlet property="genderLabel" destination="ONp-th-JpQ" id="IiM-gx-FRI"/>
                         <outlet property="img" destination="rfd-ll-WHg" id="0SG-fE-8Hr"/>

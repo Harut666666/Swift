@@ -1,8 +1,8 @@
 //
 //  CustomTableViewCell.swift
-//  UsersParser
+//  UsersProject
 //
-//  Created by Harut on 2/16/20.
+//  Created by Harut on 3/2/20.
 //  Copyright © 2020 Harut Yeremyan. All rights reserved.
 //
 
@@ -15,7 +15,7 @@ class CustomTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
+        // Initialization code
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

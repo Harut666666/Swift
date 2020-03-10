@@ -40,12 +40,13 @@ class EditUserViewController: UIViewController {
 
       if !updateMode {
             user.dateCreated = Date().iso8601
-            APIManager.editUser(mode:"adduser", user: user)
+            APIManager.make(.Add, user: user)
             navigationController?.popViewController(animated: true)
         } else {
-            APIManager.editUser(mode:"updateuser", user: user)
+            APIManager.make(.Update, user: user)
         
-            _ = CoreDataManager.make(.Update, user: user)
+        
+            CoreDataManager.make(.Update, user: user)
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let destinationVC = storyboard.instantiateViewController(withIdentifier: "DetailsViewController") as! DetailsViewController
         destinationVC.user = self.user
@@ -62,16 +63,16 @@ class EditUserViewController: UIViewController {
     
     func updateUser(){
         if updateMode == true{
-        editButton.setTitle("Update", for: .normal)
+            editButton.setTitle("Update", for: .normal)
             nameTextFild.text = user.name
-                   surnameTextFild.text = user.surname
-                   emailTextFild.text = user.email
-                   phoneTextFild.text = user.phone
-                   addressTextFild.text = user.address
-                   imgUrlTextFild.text = user.img
-                   genderTextFild.text = user.gender
-                   ageTextFild.text = user.age
-                   aboutTextFild.text = user.about
+            surnameTextFild.text = user.surname
+            emailTextFild.text = user.email
+            phoneTextFild.text = user.phone
+            addressTextFild.text = user.address
+            imgUrlTextFild.text = user.img
+            genderTextFild.text = user.gender
+            ageTextFild.text = user.age
+            aboutTextFild.text = user.about
         }
     }
     

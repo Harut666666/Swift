@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		7867569D2409403000594CE6 /* AddressLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7867569C2409403000594CE6 /* AddressLocationViewController.swift */; };
 		7867569F24094E6F00594CE6 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7867569E24094E6F00594CE6 /* CoreDataManager.swift */; };
+		789B64E42417BDDA00B6C3BE /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789B64E32417BDDA00B6C3BE /* Helper.swift */; };
 		78B51E78240C2F5D00EBFC5C /* Edit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78B51E77240C2F5D00EBFC5C /* Edit.swift */; };
 		78FF15FE23F93DAF002AA913 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FF15FD23F93DAF002AA913 /* AppDelegate.swift */; };
 		78FF160023F93DAF002AA913 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FF15FF23F93DAF002AA913 /* SceneDelegate.swift */; };
@@ -47,6 +48,7 @@
 /* Begin PBXFileReference section */
 		7867569C2409403000594CE6 /* AddressLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressLocationViewController.swift; sourceTree = "<group>"; };
 		7867569E24094E6F00594CE6 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		789B64E32417BDDA00B6C3BE /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		78B51E77240C2F5D00EBFC5C /* Edit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Edit.swift; sourceTree = "<group>"; };
 		78FF15FA23F93DAF002AA913 /* UsersParser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UsersParser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		78FF15FD23F93DAF002AA913 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -96,6 +98,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		789B64E12417BDB000B6C3BE /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				789B64E32417BDDA00B6C3BE /* Helper.swift */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
 		78FF15F123F93DAF002AA913 = {
 			isa = PBXGroup;
 			children = (
@@ -119,6 +129,7 @@
 		78FF15FC23F93DAF002AA913 /* UsersParser */ = {
 			isa = PBXGroup;
 			children = (
+				789B64E12417BDB000B6C3BE /* Helper */,
 				78FF164023F93EE8002AA913 /* Model */,
 				78FF163B23F93EC2002AA913 /* Custom */,
 				78FF163423F93E51002AA913 /* Controller */,
@@ -340,6 +351,7 @@
 				78FF164223F93EF7002AA913 /* User.swift in Sources */,
 				78FF163A23F93EAF002AA913 /* DetailsViewController.swift in Sources */,
 				78B51E78240C2F5D00EBFC5C /* Edit.swift in Sources */,
+				789B64E42417BDDA00B6C3BE /* Helper.swift in Sources */,
 				78FF160023F93DAF002AA913 /* SceneDelegate.swift in Sources */,
 				78FF160823F93DAF002AA913 /* UsersParser.xcdatamodeld in Sources */,
 			);

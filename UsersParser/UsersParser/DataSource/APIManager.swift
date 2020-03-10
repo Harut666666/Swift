@@ -13,87 +13,85 @@ import UIKit
 
 class APIManager{
     
-    class func getUsers(completion: @escaping([User])->()){
-        let monitor = NWPathMonitor()
-        let queue = DispatchQueue(label: "Monitor")
-        monitor.start(queue: queue)
-        monitor.pathUpdateHandler = {
-            path in
-            if path.status == .satisfied{
-                print("We are connected")
-                let url = URL(string: "http://localhost:8080/showusers")!
-                URLSession.shared.dataTask(with: url){
-                    data, respons, error in
-                    guard let data = data else {print(error?.localizedDescription ?? "Unknown error")
-                        return
-                    }
-                    let decoder = JSONDecoder()
-                    if let users = try? decoder.decode([User].self, from: data){
-                        completion(users)
-                    }else{
-                        print("Unable to parse JSON")
-                    }
-                }.resume()
-            }else{
-                print("No internet connection")
-                completion(CoreDataManager.make(.Fetch)!)
-               }
-            }
-        }
+    static var encoder = JSONEncoder()
+    static var decoder = JSONDecoder()
     
-
-    class func editUser(mode:String, user:User){
-           let url = URL(string: "http://localhost:8080/\(mode)")!
-           let encoder = JSONEncoder()
-           var req = URLRequest(url: url)
-           req.httpMethod = "POST"
-           req.setValue("application/json", forHTTPHeaderField: "Content-Type")
-           req.httpBody = try? encoder.encode(user)
-        
-            URLSession.shared.dataTask(with: req){
-                   data,response,error in
-                     guard let data = data else {print(error?.localizedDescription ?? "Unknown error")
-                         return}
-                     let decoder = JSONDecoder()
-                    decoder.keyDecodingStrategy = .convertFromSnakeCase
-                    decoder.dateDecodingStrategy = .iso8601
-                     if let user = try? decoder.decode(User.self, from: data) {
-                        print(user.id!)
-                        if mode == "adduser"{
-                        _ = CoreDataManager.make(.Add, user: user)
-                        }
-                     }
+    class func make(_ action:Edit, user:User){
+        let url = URL(string: "http://localhost:8080/\(action.rawValue)")
+        var request = URLRequest(url: url!)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = try? encoder.encode(user)
+        URLSession.shared.dataTask(with: request){
+            data,response,error in
+            guard let data = data else {return}
+            guard let user = try? decoder.decode(User.self, from: data) else {return}
+            DispatchQueue.main.async {
+                switch action{
+                case .Add:
+                    CoreDataManager.make(.Add, user: user)
+                case .Update:
+                    CoreDataManager.make(.Update, user: user)
+                case .Delete:
+                    CoreDataManager.make(.Delete, user: user)
+                default:
+                    break
+                }
                 UserDefaults.standard.set(Date().iso8601, forKey: "lastSync")
-            }.resume()
-       }
+            }
+        }.resume()
+    }
     
-    class func syncUser(user:User){
-        let url = URL(string: "http://localhost:8080/sync")!
-        let encoder = JSONEncoder()
-        var req = URLRequest(url: url)
-        req.httpMethod = "POST"
-        req.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        req.httpBody = try? encoder.encode(user)
-         URLSession.shared.dataTask(with: req){
-                data,response,error in
-                  guard let data = data else {print(error?.localizedDescription ?? "Unknown error")
-                      return}
-                  let decoder = JSONDecoder()
-                 decoder.keyDecodingStrategy = .convertFromSnakeCase
-                 decoder.dateDecodingStrategy = .iso8601
-                  if let users = try? decoder.decode([User].self, from: data) {
-                    print("User count API : \(users.count)")
-                    for user in users{
-                        if (user.dateChanged!.iso8601! > user.dateCreated!.iso8601!){
-                           _ = CoreDataManager.make(.Update, user: user)
-                        }
-                        else{
-                            _ = CoreDataManager.make(.Add, user: user)
-                        }
-                       
-                    }
-                  }
-             UserDefaults.standard.set(Date().iso8601, forKey: "lastSync")
-              }.resume()
+    class func syncServer(_ action:Edit, lastSync:User? = nil, _ completion: (() -> ())? = nil){
+        let url = URL(string: "http://localhost:8080/\(action.rawValue)")
+        var request = URLRequest(url: url!)
+        if action == .Sync{
+            request.httpMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.httpBody = try? encoder.encode(lastSync)
+        }
+        URLSession.shared.dataTask(with: request){
+            data, response, error in
+            guard let data = data  else {return}
+            guard let users = try? decoder.decode([User].self, from: data) else {return}
+            DispatchQueue.main.async {
+                switch action{
+                case .Sync:
+                    syncChanges(syncedUsers: users)
+                    completion!()
+                case .FullSync:
+                    fullSync(syncedUsers: users)
+                default:
+                    break
+                }
+            }
+        }.resume()
+    }
+    
+    
+    private class func syncChanges(syncedUsers:[User]){
+        let lastSyncRegister = UserDefaults.standard.string(forKey: "lastSync")
+        for syncedUser in syncedUsers{
+            if lastSyncRegister != nil{
+                if (syncedUser.dateChanged!.iso8601! > lastSyncRegister!.iso8601!) &&
+                    (syncedUser.dateCreated!.iso8601! > lastSyncRegister!.iso8601!){
+                    CoreDataManager.make(.Add, user: syncedUser)
+                }
+                else if (syncedUser.dateChanged!.iso8601! > lastSyncRegister!.iso8601!) &&
+                    (syncedUser.dateCreated!.iso8601! <= lastSyncRegister!.iso8601!){
+                    CoreDataManager.make(.Update, user: syncedUser)
+                }
+            }
+            UserDefaults.standard.set(Date().iso8601, forKey: "lastSync")
+        }
+    }
+    
+    private class func fullSync(syncedUsers:[User]){
+        print(syncedUsers.count)
+        for syncedUser in syncedUsers{
+            CoreDataManager.make(.Add, user: syncedUser)
+            UserDefaults.standard.set(Date().iso8601, forKey: "lastSync")
+        }
+        UserDefaults.standard.set(false, forKey: "firstLaunch")
     }
 }
