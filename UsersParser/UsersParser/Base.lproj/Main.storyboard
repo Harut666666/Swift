@@ -73,7 +73,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Hnq-K2-u6n" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2405.7971014492755" y="0.6696428571428571"/>
+            <point key="canvasLocation" x="-2642" y="-165"/>
         </scene>
         <!--Edit User View Controller-->
         <scene sceneID="RZQ-2I-Mq8">
@@ -177,7 +177,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wJF-Oe-G1R" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4738" y="463"/>
+            <point key="canvasLocation" x="-4781" y="571"/>
         </scene>
         <!--Details View Controller-->
         <scene sceneID="Rdd-Wo-TlB">
@@ -283,7 +283,7 @@
                         <outlet property="genderLabel" destination="ONp-th-JpQ" id="IiM-gx-FRI"/>
                         <outlet property="img" destination="rfd-ll-WHg" id="0SG-fE-8Hr"/>
                         <outlet property="nameLabel" destination="HeD-XU-KRG" id="lyD-zG-gHE"/>
-                        <outlet property="phoneLabel" destination="gpD-Ii-ycj" id="yEf-dh-hjo"/>
+                        <outlet property="phoneLabel" destination="gpD-Ii-ycj" id="Vyd-WF-GLe"/>
                         <outlet property="surnameLabel" destination="9dw-Ce-xCF" id="EJb-ia-nqu"/>
                     </connections>
                 </viewController>
