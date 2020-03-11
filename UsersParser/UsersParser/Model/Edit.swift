@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum Edit:String {
+enum Edit: String {
     case Add = "add"
     case Delete = "delete"
     case Update = "update"

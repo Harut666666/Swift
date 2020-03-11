@@ -12,16 +12,19 @@ class CustomTableViewCell: UITableViewCell {
 
     @IBOutlet weak var imgCustom: UIImageView!
     @IBOutlet weak var nameCustom: UILabel!
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        
-    }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    func updateCellData( user: User) {
+        if let name = user.name , let surname = user.surname {
+             self.textLabel?.text = "\(name) \(surname)"
+        }
+        if let userImgString = user.img, !userImgString.isEmpty {
+            if let url = URL(string: userImgString) {
+                if let data = try? Data(contentsOf: url) {
+                    if let image = UIImage(data: data) {
+                        self.imageView?.image = image
+                    }
+                }
+            } // placeholder
+        }// placeholder image
     }
-    
 }

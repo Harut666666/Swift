@@ -16,7 +16,7 @@ class UserTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureButtons()
-        tableView.register(UINib(nibName: "\(CustomTableViewCell.self)", bundle: nil), forCellReuseIdentifier: "\(CustomTableViewCell.self)")
+        configureTableView()
         configureUsers()
         
     }
@@ -24,8 +24,17 @@ class UserTableViewController: UITableViewController {
         print(UserDefaults.standard.string(forKey: "lastSync")!)
         configureButtons()
         configureUsers()
-        
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "details",
+            let destination = segue.destination as? DetailsViewController,
+            let chosenIndex = self.tableView.indexPathForSelectedRow?.row
+        {
+            destination.user = users[chosenIndex]
+        }
+    }
+    
     // MARK: - Table view data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -37,27 +46,13 @@ class UserTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "\(CustomTableViewCell.self)", for: indexPath)
-        let user = users[indexPath.row]
-        cell.textLabel?.text = String("\(user.name!) " + " \(user.surname!)")
-        if let userImgString = user.img, !userImgString.isEmpty {
-            let url = URL(string: userImgString)
-            if let data = try? Data(contentsOf: url!) {
-                if let image = UIImage(data: data) {
-                    cell.imageView?.image = image
-                }
-            }
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "\(CustomTableViewCell.self)", for: indexPath) as? CustomTableViewCell {
+            cell.updateCellData(user: users[indexPath.row])
+            return cell
         }
-        return cell
+        return UITableViewCell()
     }
-    
-    func configureUsers(){
-        DispatchQueue.main.async {
-            self.users = CoreDataManager.make(.Fetch)!
-            self.tableView.reloadData()
-        }
-    }
-    
+        
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: "details", sender: nil)
     }
@@ -76,24 +71,29 @@ class UserTableViewController: UITableViewController {
         }
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "details",
-            let destination = segue.destination as? DetailsViewController,
-            let chosenIndex = self.tableView.indexPathForSelectedRow?.row
-        {
-            destination.user = users[chosenIndex]
+    // MARK: - setup configure
+    
+    func configureTableView()  {
+        guard let tableView = tableView else { return }
+        tableView.register(UINib(nibName: "\(CustomTableViewCell.self)", bundle: nil),
+        forCellReuseIdentifier: "\(CustomTableViewCell.self)")
+    }
+    
+    func configureUsers() {
+        self.users = CoreDataManager.make(.Fetch)!
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
         }
     }
+    
     func configureButtons(){
-        Helper.isConnected{
-            status in
-            if status == false{
+        Helper.isConnected{ status in
+            if status == false {
                 DispatchQueue.main.async {
                     self.addUserButton.isEnabled = false
                     self.refreshControl?.isEnabled = false
                 }
-            }
-            else{
+            }else{
                 DispatchQueue.main.async {
                     self.addUserButton.isEnabled = true
                     self.refreshControl?.isEnabled = true

@@ -10,8 +10,13 @@ import UIKit
 
 class EditUserViewController: UIViewController {
     
+    enum Mode: String {
+        case add
+        case update
+    }
+    
     var user = User()
-    var updateMode = false
+    var updateMode = Mode.add
     
     @IBOutlet weak var nameTextFild: UITextField!
     @IBOutlet weak var surnameTextFild: UITextField!
@@ -27,18 +32,13 @@ class EditUserViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        if updateMode == true {
-            editButton.setTitle("Update", for: .normal)
-        }else{
-            editButton.setTitle("Add", for: .normal)
-        }
+        editButton.setTitle(updateMode.rawValue.capitalized, for: .normal)
     }
   
     @IBAction func addUser(_ sender: UIButton) {
         setUser()
 
-      if !updateMode {
+        if updateMode == .add {
             user.dateCreated = Date().iso8601
             APIManager.make(.Add, user: user)
             navigationController?.popViewController(animated: true)
@@ -62,7 +62,7 @@ class EditUserViewController: UIViewController {
     }
     
     func updateUser(){
-        if updateMode == true{
+        if updateMode == .update {
             editButton.setTitle("Update", for: .normal)
             nameTextFild.text = user.name
             surnameTextFild.text = user.surname

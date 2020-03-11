@@ -18,14 +18,17 @@ class AddressLocationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         showAddressLocation(address: address)
-        // Do any additional setup after loading the view.
     }
+    
+    deinit {
+        debugPrint("AddressLocationViewController")
+    }
+    
     func showAddressLocation(address:String){
         let searchRequest = MKLocalSearch.Request()
         searchRequest.naturalLanguageQuery = address
         let activeSearch = MKLocalSearch(request: searchRequest)
-        activeSearch.start{
-            response,error in
+        activeSearch.start { [weak self]  response,error in
             guard let response = response else {
                 print("error?.localizedDescription")
                 return
@@ -34,14 +37,14 @@ class AddressLocationViewController: UIViewController {
             let longtitude = response.boundingRegion.center.longitude
             
             let annotation = MKPointAnnotation()
-            annotation.title = self.address
+            annotation.title = self?.address
             annotation.coordinate = CLLocationCoordinate2DMake(latitude, longtitude)
-            self.addressMapView.addAnnotation(annotation)
+            self?.addressMapView.addAnnotation(annotation)
             
             let coordinate = CLLocationCoordinate2DMake(latitude, longtitude)
             let span = MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
             let region = MKCoordinateRegion(center: coordinate, span: span)
-            self.addressMapView.setRegion(region, animated: true)
+            self?.addressMapView.setRegion(region, animated: true)
         }
     }
 

@@ -12,7 +12,8 @@ import UIKit
 
 class CoreDataManager{
     
-    @discardableResult class func make(_ action:Edit, user:User?=nil)->[User]?{
+    @discardableResult
+    class func make(_ action:Edit, user:User? = nil) -> [User]? {
         var fetchedUsers = [User]()
         guard let delegate = UIApplication.shared.delegate as? AppDelegate else{return nil}
         
@@ -20,35 +21,39 @@ class CoreDataManager{
         let entity = NSEntityDescription.entity(forEntityName: "UserDb", in: context)
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "UserDb")
         
+        let save = {
+            do {try context.save()}
+            catch { debugPrint(error) }
+        }
+        
         switch action {
         case .Add:
             let userObject = NSManagedObject(entity: entity!, insertInto: context)
             saveUser(object:userObject, user: user!)
+            save()
         case .Update:
             fetchRequest.predicate = NSPredicate(format: "id = %i", user!.id!)
             guard let fetchedObjects = try? context.fetch(fetchRequest) else{return nil}
             guard let targetObject = fetchedObjects[0] as? NSManagedObject else{return nil}
             updateUser(target: targetObject, user: user!)
+            save()
         case .Delete:
             fetchRequest.predicate = NSPredicate(format: "id = %i", user!.id!)
             guard let fetchedObjects = try? context.fetch(fetchRequest) else{return nil}
             guard let targetObject = fetchedObjects[0] as? NSManagedObject else{return nil}
             deleteUser(target: targetObject, context: context)
+            save()
         case .Fetch:
             guard let fetchedObjects = try? context.fetch(fetchRequest) else{return nil}
             fetchedUsers = fetchUsers(users: fetchedObjects as! [NSManagedObject])
-            break
         default:
             break
         }
-        if action == .Add || action == .Delete || action == .Update{
-            do {try context.save()}
-            catch {print(error)}
-        }
+
         return fetchedUsers
     }
     
-    private class func saveUser(object: NSManagedObject,user: User){
+    private class func saveUser(object: NSManagedObject, user: User) {
         object.setValuesForKeys([
             "id" : user.id!,
             "name": user.name!,

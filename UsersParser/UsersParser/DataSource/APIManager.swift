@@ -27,16 +27,7 @@ class APIManager{
             guard let data = data else {return}
             guard let user = try? decoder.decode(User.self, from: data) else {return}
             DispatchQueue.main.async {
-                switch action{
-                case .Add:
-                    CoreDataManager.make(.Add, user: user)
-                case .Update:
-                    CoreDataManager.make(.Update, user: user)
-                case .Delete:
-                    CoreDataManager.make(.Delete, user: user)
-                default:
-                    break
-                }
+                CoreDataManager.make(action, user: user)
                 UserDefaults.standard.set(Date().iso8601, forKey: "lastSync")
             }
         }.resume()

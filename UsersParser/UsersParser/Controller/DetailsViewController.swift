@@ -14,7 +14,6 @@ class DetailsViewController: UIViewController, UINavigationControllerDelegate {
     var goingForwards = true
     
     
-    @IBOutlet weak var idLabel: UILabel?
     @IBOutlet weak var img: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var surnameLabel: UILabel!
@@ -64,9 +63,9 @@ class DetailsViewController: UIViewController, UINavigationControllerDelegate {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destination = segue.destination as? EditUserViewController
-        if segue.identifier == "edit"{
+        if segue.identifier == "edit" {
             destination?.user = user
-            destination?.updateMode = true
+            destination?.updateMode = .update
         }
         let addressVC = segue.destination as? AddressLocationViewController
         if segue.identifier == "address"{
@@ -74,15 +73,14 @@ class DetailsViewController: UIViewController, UINavigationControllerDelegate {
         }
     }
     
+// WARNING -  UIIMageview extention
     func updateUserData()  {
-        
         let url = URL(string: user.img!)
         if let data = try? Data(contentsOf: url!) {
             if let image = UIImage(data: data) {
-                img.image = image
+                self.img.image = image
             }
         }
-        
         nameLabel.text = user.name
         surnameLabel.text = user.surname
         emailLabel.text = user.email
