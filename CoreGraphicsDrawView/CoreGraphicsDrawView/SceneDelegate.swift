@@ -1,8 +1,8 @@
 //
 //  SceneDelegate.swift
-//  UsersProject
+//  CoreGraphicsDrawView
 //
-//  Created by Harut on 3/2/20.
+//  Created by Harut on 4/26/20.
 //  Copyright © 2020 Harut Yeremyan. All rights reserved.
 //
 

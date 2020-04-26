@@ -1,8 +1,8 @@
 //
 //  AppDelegate.swift
-//  UsersProject
+//  CoreGraphicsDrawView
 //
-//  Created by Harut on 3/2/20.
+//  Created by Harut on 4/26/20.
 //  Copyright © 2020 Harut Yeremyan. All rights reserved.
 //
 
@@ -15,7 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-            _ = CoreDataManager.make(.Sync)
+        // Override point for customization after application launch.
         return true
     }
 
@@ -42,7 +42,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
          application to it. This property is optional since there are legitimate
          error conditions that could cause the creation of the store to fail.
         */
-        let container = NSPersistentContainer(name: "UsersProject")
+        let container = NSPersistentContainer(name: "CoreGraphicsDrawView")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
                 // Replace this implementation with code to handle the error appropriately.
