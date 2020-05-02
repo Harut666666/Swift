@@ -85,6 +85,7 @@ class CoreDataManager{
             "img": user.img!,
             "gender": user.gender!,
             "age": user.age!,
+            "phone": user.phone!,
             "dateChanged":user.dateChanged!.iso8601!
         ])
     }

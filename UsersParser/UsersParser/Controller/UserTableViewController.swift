@@ -58,7 +58,6 @@ class UserTableViewController: UITableViewController {
     }
     
     @IBAction func makeRefresh(_ sender: UIRefreshControl) {
-        print("Refresh")
         var lastSync = User()
         let lastSyncRegister = UserDefaults.standard.string(forKey: "lastSync")
         lastSync.dateChanged = lastSyncRegister
